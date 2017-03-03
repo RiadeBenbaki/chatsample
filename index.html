@@ -1,0 +1,42 @@
+<!doctype html>  
+<html lang="en">  
+    <head>
+<style>
+td {
+width:400px;
+}
+table {
+margin-left:auto;
+margin-right:auto;
+}
+</style>
+    </head>
+    <body>
+        <h1>Hello World!</h1>
+        <div id="future"></div>
+        <form id="form" id="chat_form">
+            <input id="chat_input" type="text">
+            <input type="submit" value="Send">
+        </form>
+         <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="/socket.io/socket.io.js"></script>       
+<script>  
+var username = prompt("Please enter a username")
+    var socket = io.connect('http://localhost:4200');
+	socket.emit('setusername',username);
+	
+   socket.on('messages', function(data) {
+   $('table').html($('table').html() + '<tr><td style="font-size: xx-large;font-weight: 900;">' + data.sender + '</td><td>' + data.content + '</td></tr>');
+   });	
+		 $('form').submit(function(e){
+     e.preventDefault();
+     var message = $('#chat_input').val();
+     socket.emit('messages', { content : message,sender : username });
+ });
+ 
+</script>	
+<table style="border=0px;">
+
+</table>	
+    </body>
+</html>  
